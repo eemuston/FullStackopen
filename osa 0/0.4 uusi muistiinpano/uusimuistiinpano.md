@@ -5,13 +5,11 @@ sequenceDiagram
     participant server
     
 
-    Note right of browser: Data from form gets posted to server.
+    Note right of browser: Data from form gets posted to server
 
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
-
-    Note right of server: Receives the note and saves it.
-
+    Note right of server: Receives the note and saves it
     server->>browser: redirect back to notes
     deactivate server
 
