@@ -28,8 +28,8 @@ sequenceDiagram
 
     Note right of browser: The browser executes the callback function that renders the notes
 
-    Note right of browser: browser sends POST request to server with the content as JSON type
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    Note right of browser: browser sends POST request to server with the content as JSON type
     activate server
     server-->>broswer: message: "note created"
     deactivate server
