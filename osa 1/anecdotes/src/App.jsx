@@ -33,7 +33,9 @@ const App = () => {
   }
 
   console.log(votes)
-  const mostVoted = votes.indexOf(Math.max(...votes))
+  const mostVoted = () => (
+    votes.indexOf(Math.max(...votes))
+  )
   console.log(mostVoted)
   return (
     <div>
@@ -43,7 +45,8 @@ const App = () => {
       <Button onClick={generateSelected} text="next anecdote"/>
       <Button onClick={countVotes} text="vote"/>
       <h1>Anecdote with most votes</h1>
-      {anecdotes[mostVoted]}
+      {anecdotes[mostVoted()]}
+      <p>has {votes[mostVoted()]} votes</p>
     </div>
   )
 }
