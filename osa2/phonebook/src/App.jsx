@@ -27,10 +27,10 @@ const App = () => {
     }
     if (newName.trim() === "" || newNumber.trim() === "")
     {
-        alert(`Can't add empty name or number`)
-        setNewName('')
-        setNewNumber('')
-        return;
+      alert(`Can't add empty name or number`)
+      setNewName('')
+      setNewNumber('')
+      return;
     }
     //console.log("Am I getting here?")
     const personObject = {
