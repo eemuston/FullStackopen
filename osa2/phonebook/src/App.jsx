@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons' 
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -13,11 +13,11 @@ const App = () => {
   //I want to deepen my knowledge on useEffect and promises.
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService
+      .getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
     })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -44,9 +44,13 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+    personService
+    .create(personObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
+      setNewName('')
+      setNewNumber('')
+    })
   }
 
   const personsToShow = persons.filter(person =>
