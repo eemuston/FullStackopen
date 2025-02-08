@@ -3,7 +3,7 @@
     {
       "id": "1",
       "content": "HTML is easy",
-      "important": true
+      "important": false
     },
     {
       "id": "2",
@@ -13,21 +13,51 @@
     {
       "id": "3",
       "content": "GET and POST are the most important methods of HTTP protocol",
-      "important": true
+      "important": false
     },
     {
       "id": "ef41",
       "content": "a new note...",
-      "important": true
+      "important": false
     },
     {
       "id": "a4e6",
       "content": "a new notedasdsa...",
-      "important": true
+      "important": false
     },
     {
       "id": "91b7",
       "content": "dsadsadsads",
+      "important": false
+    },
+    {
+      "id": "ddd2",
+      "content": "a new note...",
+      "important": false
+    },
+    {
+      "id": "8c2f",
+      "content": "FHAT!",
+      "important": false
+    },
+    {
+      "id": "9802",
+      "content": "if...",
+      "important": false
+    },
+    {
+      "id": "5396",
+      "content": "a new note...",
+      "important": false
+    },
+    {
+      "id": "c1fe",
+      "content": "I have way too many notes",
+      "important": true
+    },
+    {
+      "id": "6d68",
+      "content": "a new note...;",
       "important": false
     }
   ]
