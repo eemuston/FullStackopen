@@ -10,17 +10,13 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setNewSearch] = useState('')
 
-  //I want to deepen my knowledge on useEffect and promises.
   useEffect(() => {
-    console.log('effect')
     personService
       .getAll()
       .then(initialPersons => {
-        console.log('promise fulfilled')
         setPersons(initialPersons)
     })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -39,7 +35,6 @@ const App = () => {
       setNewNumber('')
       return;
     }
-    //console.log("Am I getting here?")
     const personObject = {
       name: newName,
       number: newNumber,
@@ -64,7 +59,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber}/>
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow}/>
+      <Persons personsToShow={personsToShow} />
     </div>
   )
 
