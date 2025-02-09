@@ -20,14 +20,6 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const exists = persons.some(person => person.name === newName)
-    if (exists === true)
-    {
-      alert(`${newName} is already added to phonebook`)
-      setNewName('')
-      setNewNumber('')
-      return;
-    }
     if (newName.trim() === "" || newNumber.trim() === "")
     {
       alert(`Can't add empty name or number`)
@@ -38,6 +30,31 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
+    }
+    const exists = persons.some(person => person.name === newName)
+    if (exists === true) 
+    {
+      const update = persons.find(person => person.name === newName);
+      if (update && update.number !== newNumber) 
+      {
+        if (window.confirm(`${newName} already exists in the phonebook! Do you want to update their number?`)) 
+        {  
+          personService
+            .update(update.id, personObject)
+            .then(returnedPerson => {
+              setPersons(persons.map(p => (p.id !== update.id ? p : returnedPerson)));
+              setNewName('');
+              setNewNumber('');
+            })
+        }
+        setNewName('');
+        setNewNumber('');
+        return ;
+      }
+      alert(`${newName} is already added to phonebook`)
+      setNewName('')
+      setNewNumber('')
+      return;
     }
     personService
     .create(personObject)
