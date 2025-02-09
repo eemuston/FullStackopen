@@ -43,8 +43,6 @@ const App = () => {
             .update(update.id, personObject)
             .then(returnedPerson => {
               setPersons(persons.map(p => (p.id !== update.id ? p : returnedPerson)));
-              setNewName('');
-              setNewNumber('');
             })
         }
         setNewName('');
