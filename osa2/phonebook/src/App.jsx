@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import personService from './services/persons' 
+import personService from './services/persons'
+import Notification from './components/Notification' 
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setNewSearch] = useState('')
+  const [notification, setNotification] = useState({ message: null, color: null})
 
   useEffect(() => {
     personService
@@ -43,6 +45,12 @@ const App = () => {
             .update(update.id, personObject)
             .then(returnedPerson => {
               setPersons(persons.map(p => (p.id !== update.id ? p : returnedPerson)));
+              setNotification({ message:
+                `${personObject.name} has been updated`
+              , color: "green"})
+              setTimeout(() => {
+                setNotification({ message: null, color: null })
+              }, 5000)
             })
         }
         setNewName('');
@@ -60,17 +68,39 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
+      setNotification({ message:
+        `${personObject.name} has been added`
+      , color: "green"})
+      setTimeout(() => {
+        setNotification({ message: null, color: null })
+      }, 5000)
     })
   }
 
   const erasePerson = (person) => {
-    if (window.confirm(`Do you really want to delete ${person.name}!`))
+    if (window.confirm(`Do you really want to delete ${person.name}?`))
     {
       personService
         .erase(person.id)
-        .then(deleted => {
-          const filteredObjects = persons.filter(deleted => deleted.id !== person.id)
+        .then(() => {
+          const filteredObjects = persons.filter(p => p.id !== person.id)
           setPersons(filteredObjects)
+          setNotification({ 
+            message: `${person.name} has been deleted`,
+            color: "green"})
+          setTimeout(() => {
+            setNotification({ message: null, color: null })
+          }, 5000)
+        })
+        .catch(error => {
+            setNotification({ message:
+              `The information of ${person.name} has already been removed from server`,
+              color: "red"
+            })
+            setTimeout(() => {
+              setNotification({ message: null, color: null })
+            }, 5000)
+            setPersons(persons.filter(p => p.id !== person.id))
         })
     }  
   } 
@@ -82,6 +112,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notification}/>
       <Filter searchName={searchName} setNewSearch={setNewSearch}/>
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber}/>
