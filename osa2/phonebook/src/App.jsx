@@ -48,6 +48,18 @@ const App = () => {
     })
   }
 
+  const erasePerson = (person) => {
+    if (window.confirm(`Do you really want to delete ${person.name}!`))
+    {
+      personService
+        .erase(person.id)
+        .then(deleted => {
+          const filteredObjects = persons.filter(deleted => deleted.id !== person.id)
+          setPersons(filteredObjects)
+        })
+    }  
+  } 
+
   const personsToShow = persons.filter(person =>
     person.name.toLowerCase().includes(searchName.toLowerCase())
   )
@@ -59,7 +71,9 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber}/>
       <h3>Numbers</h3>
-      <Persons personsToShow={personsToShow} />
+      {personsToShow.map(person =>
+        <Persons key={person.id} person={person} erasePerson={() => erasePerson(person)}/>
+      )}
     </div>
   )
 
