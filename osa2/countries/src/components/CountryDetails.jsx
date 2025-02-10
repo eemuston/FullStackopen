@@ -12,8 +12,6 @@ const CountryDetails = ({ country }) => {
         .catch(error => console.error('Error fetching weather data:', error));
     }
     }, [country.capital]);
-    if (weatherData === null)
-        return;
     console.log(weatherData)
     return (
       <div>
@@ -27,10 +25,16 @@ const CountryDetails = ({ country }) => {
           ))}
         </ul>
         <img src={country.flags.png} />
-        <h3>Weather in {country.capital}</h3>
-        <p>temperature {weatherData.main.temp} °C</p>
-        <img src={"https://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png"}/>
-        <p>wind {weatherData.wind.speed} m/s</p>
+        {weatherData !== null ?
+        <div>
+          <h3>Weather in {country.capital}</h3>
+          <p>temperature {weatherData.main.temp} °C</p>
+          <img src={"https://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png"}/>
+          <p>wind {weatherData.wind.speed} m/s</p>
+        </div>
+        :
+          <p>Error fetching weather data</p>
+        }
       </div>
     );
   };
