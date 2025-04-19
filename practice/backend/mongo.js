@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+/* const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
   console.log('give password as argument')
@@ -29,9 +29,9 @@ note.save().then(result => {
   mongoose.connection.close()
 }) */
 
-Note.find({important: true}).then(result => {
+/* Note.find({important: true}).then(result => {
     result.forEach(note => {
       console.log(note)
     })
     mongoose.connection.close()
-})
+}) */
