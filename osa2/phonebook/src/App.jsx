@@ -75,6 +75,16 @@ const App = () => {
         setNotification({ message: null, color: null })
       }, 5000)
     })
+    .catch(error => {
+      setNewName('')
+      setNewNumber('')
+      setNotification({ message:
+        error.response.data.error
+      , color: "red"})
+      setTimeout(() => {
+        setNotification({ message: null, color: null })
+      }, 5000)
+    })
   }
 
   const erasePerson = (person) => {
