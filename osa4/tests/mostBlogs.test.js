@@ -2,7 +2,7 @@ const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
-describe('total likes', () => {
+describe('most blogs', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -14,17 +14,17 @@ describe('total likes', () => {
     }
   ]
 
-  test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
-    assert.strictEqual(result, 5)
+  test('when list has only one blog, the author of that blog has most blogs', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', blogs: 1})
   })
 
   const listWithNoBlogs = [
   ]
 
-  test('when list has 0 blogs the sum is 0', () => {
-    const result = listHelper.totalLikes(listWithNoBlogs)
-    assert.strictEqual(result, 0)
+  test('when list has 0 blogs the author is null and blogs -Infinity', () => {
+    const result = listHelper.mostBlogs(listWithNoBlogs)
+    assert.deepStrictEqual(result, {author: null, blogs: -Infinity})
   })
 
   const listWithMultipleBlogs = [
@@ -70,8 +70,8 @@ describe('total likes', () => {
       }
   ]
 
-  test('when list has multiple blogs it counts the sum of all the likes', () => {
-    const result = listHelper.totalLikes(listWithMultipleBlogs)
-    assert.strictEqual(result, 75)
+  test('when list has multiple blogs it finds the author with most blogs and returns the author and sum of blogs', () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    assert.deepStrictEqual(result, {author: 'Roman', blogs: 2})
   })
 })
