@@ -32,7 +32,7 @@ notesRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-notesRouter.put('/:id',async (request, response) => {
+notesRouter.put('/:id', async (request, response) => {
   const { content, important } = request.body
 
   const note = await Note.findById(request.params.id)
