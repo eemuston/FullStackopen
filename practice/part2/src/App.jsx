@@ -130,6 +130,10 @@ const App = () => {
     </form>  
   )
 
+  const handleLogout = () => {
+    console.log("clearing localstorage")
+    window.localStorage.clear()
+  }
 
   return (
     <div>
@@ -138,6 +142,10 @@ const App = () => {
       {!user && loginForm()}
       {user && <div>
        <p>{user.name} logged in</p>
+       <form onSubmit={handleLogout} >
+        <button type="submit">log out</button>
+       </form>
+       <br/>
          {noteForm()}
       </div>
       } 
