@@ -18,7 +18,7 @@ const create = async newObject => {
   }
 
   const response = await axios.post(baseUrl, newObject, config)
-  return request.then(response => response.data)
+  return response.data
 }
 
 const update = (id, newObject) => {
