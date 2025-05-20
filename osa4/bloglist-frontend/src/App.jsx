@@ -68,6 +68,44 @@ const App = () => {
     })
   }
 
+ const likeBlog = (id) => {
+  const blog = blogs.find(b => b.id === id)
+  const likedBlog = {...blog, likes: blog.likes + 1, user: blog.user.id}
+
+  blogService
+    .update(id, likedBlog)
+    .then(returnedBlog => {
+      setBlogs(blogs.map(blog => blog.id === likedBlog.id ? {...returnedBlog, user: blog.user} : blog))
+    })
+ }
+
+ const deleteBlog = (blog) => {
+  if(window.confirm(`Remove blog ${blog.title} by ${blog.author}`))
+  {
+    blogService
+      .erase(blog.id)
+      .then(() => {
+        const filteredBlogs = blogs.filter(b => b.id !== blog.id)
+        setBlogs(filteredBlogs)
+        setNotification({ message:
+        `${blog.title} by ${blog.author} has been deleted`
+      , color: "green"})
+      setTimeout(() => {
+        setNotification({ message: null, color: null })
+      }, 5000)
+      })
+      .catch(error => {
+         setNotification({ message:
+              `You are not authorized to delete ${blog.title}`,
+              color: "red"
+            })
+            setTimeout(() => {
+              setNotification({ message: null, color: null })
+            }, 5000)
+      })
+  }
+ }
+
    const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -98,6 +136,8 @@ const App = () => {
     setUser(null)
   }
 
+  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+
   return (
     <div>
       <Notification notification={notification} />
@@ -111,8 +151,8 @@ const App = () => {
             <BlogForm createBlog={addBlog}/>
           </Togglable>
         }
-         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+         {sortedBlogs.map(blog =>
+        <Blog key={blog.id} blog={blog} user={user} likeBlog={() => likeBlog(blog.id)} deleteBlog={() => deleteBlog(blog)} />
         )}
       </div>
       } 
