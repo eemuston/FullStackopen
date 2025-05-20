@@ -27,11 +27,11 @@ const update = (id, newObject) => {
 }
 
 const erase = (id) => {
-    const config = {
-      headers: { Authorization: token },
-    }
-    const request = axios.delete(`${baseUrl}/${id}`, config)
-    return request.then(response => response.data)
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.delete(`${baseUrl}/${id}`, config)
+  return request.then(response => response.data)
 }
 
 
