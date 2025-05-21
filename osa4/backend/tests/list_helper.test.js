@@ -70,13 +70,13 @@ describe('total likes', () => {
       __v: 0
     },
     {
-        _id: '5',
-        title: 'wofah',
-        author: 'Roman',
-        url: 'html',
-        likes: 3,
-        __v: 0
-      }
+      _id: '5',
+      title: 'wofah',
+      author: 'Roman',
+      url: 'html',
+      likes: 3,
+      __v: 0
+    }
   ]
 
   test('when list has multiple blogs it counts the sum of all the likes', () => {
@@ -226,7 +226,7 @@ describe('most blogs', () => {
 
   test('when list has only one blog, the author of that blog has most blogs', () => {
     const result = listHelper.mostBlogs(listWithOneBlog)
-    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', blogs: 1})
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', blogs: 1 })
   })
 
   const listWithNoBlogs = [
@@ -234,7 +234,7 @@ describe('most blogs', () => {
 
   test('when list has 0 blogs the author is null and blogs -Infinity', () => {
     const result = listHelper.mostBlogs(listWithNoBlogs)
-    assert.deepStrictEqual(result, {author: null, blogs: -Infinity})
+    assert.deepStrictEqual(result, { author: null, blogs: -Infinity })
   })
 
   const listWithMultipleBlogs = [
@@ -271,18 +271,18 @@ describe('most blogs', () => {
       __v: 0
     },
     {
-        _id: '5',
-        title: 'wofah',
-        author: 'Roman',
-        url: 'html',
-        likes: 3,
-        __v: 0
-      }
+      _id: '5',
+      title: 'wofah',
+      author: 'Roman',
+      url: 'html',
+      likes: 3,
+      __v: 0
+    }
   ]
 
   test('when list has multiple blogs it finds the author with most blogs and returns the author and sum of blogs', () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs)
-    assert.deepStrictEqual(result, {author: 'Petter', blogs: 2})
+    assert.deepStrictEqual(result, { author: 'Petter', blogs: 2 })
   })
 })
 
@@ -300,7 +300,7 @@ describe('most likes', () => {
 
   test('when list has only one blog it returns the author and likes of that blog', () => {
     const result = listHelper.mostLikes(listWithOneBlog)
-    assert.deepStrictEqual(result, {author: 'Edsger W. Dijkstra', likes: 5})
+    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', likes: 5 })
   })
 
   const listWithNoBlogs = [
@@ -308,7 +308,7 @@ describe('most likes', () => {
 
   test('when list has 0 blogs the author is null and likes -Infinity', () => {
     const result = listHelper.mostLikes(listWithNoBlogs)
-    assert.deepStrictEqual(result, {author: null, likes: -Infinity})
+    assert.deepStrictEqual(result, { author: null, likes: -Infinity })
   })
 
   const listWithMultipleBlogs = [
@@ -345,17 +345,17 @@ describe('most likes', () => {
       __v: 0
     },
     {
-        _id: '5',
-        title: 'wofah',
-        author: 'Roman',
-        url: 'html',
-        likes: 3,
-        __v: 0
-      }
+      _id: '5',
+      title: 'wofah',
+      author: 'Roman',
+      url: 'html',
+      likes: 3,
+      __v: 0
+    }
   ]
 
   test('when list has multiple blogs it finds the author with most likes and returns the author and sum of the likes', () => {
     const result = listHelper.mostLikes(listWithMultipleBlogs)
-    assert.deepStrictEqual(result, {author: 'Petter', likes: 52})
+    assert.deepStrictEqual(result, { author: 'Petter', likes: 52 })
   })
 })
