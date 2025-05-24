@@ -21,9 +21,9 @@ const App = () => {
     newNoteMutation.mutate({ content, important: true})
   }
 
-  const updateNoteMutation = useMutation( //highligh-line
+  const updateNoteMutation = useMutation(
     {mutationFn: updateNote,
-    onSuccess: () => { // highligh-line
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] })
     },
   })
