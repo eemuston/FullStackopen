@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import  { useField } from './hooks'
 import {
   Routes,
   Route,
@@ -53,44 +54,53 @@ const Footer = () => (
 
 const CreateNew = ({addNew, setNewNotification}) => {
   const navigate = useNavigate()
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
-
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate('/')
-    setNewNotification(`New anecdote "${content}" by ${author} added!`)
+    setNewNotification(`New anecdote "${content.value}" by ${author.value} added!`)
   }
+
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
+  const { reset: resetContent, ...contentInput } = content
+  const { reset: resetAuthor, ...authorInput } = author
+  const { reset: resetInfo, ...infoInput } = info
 
   return (
     <div>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          content:
+          <input {...contentInput} />
         </div>
         <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          author:
+          <input {...authorInput} />
         </div>
         <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          url for more info:
+          <input {...infoInput} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type='button' onClick={handleReset}>reset</button>
       </form>
     </div>
   )
-
 }
 
 
