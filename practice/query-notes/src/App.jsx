@@ -1,5 +1,37 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getNotes, createNote, updateNote } from './requests'
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Bisque;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Chocolate;
+  border-radius: 3px;
+`
+
+const Input = styled.input`
+  margin: 0.25em;
+  background: Bisque;
+  height: 23px
+`
+
+const Title = styled.h2`
+  color: Brown;
+`
+
+const List = styled.li`
+  border: 1px black solid;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 15px;
+  background: Bisque;
+  max-width: 300px;
+  list-style-type: none;
+  justify-items: center;
+  text-align: center;
+`
 
 
 const App = () => {
@@ -7,9 +39,9 @@ const App = () => {
 
   const newNoteMutation = useMutation({
     mutationFn: createNote,
-    onSuccess: () => {
-      const notes = queryClient.getQueryData('notes')
-      queryClient.setQueryData('notes', notes.concat(newNote))
+    onSuccess: (newNote) => {
+      const notes = queryClient.getQueryData(['notes'])
+      queryClient.setQueryData(['notes'], notes.concat(newNote))
     },
   })
 
@@ -46,16 +78,16 @@ const App = () => {
 
   return(
     <div>
-      <h2>Notes app</h2>
+      <Title>Notes app</Title>
       <form onSubmit={addNote}>
-        <input name="note" />
-        <button type="submit">add</button>
+        <Input name="note" />
+        <Button type="submit">add</Button>
       </form>
       {notes.map(note =>
-        <li key={note.id} onClick={() => toggleImportance(note)}>
+        <List key={note.id} onClick={() => toggleImportance(note)}>
           {note.content} 
           <strong> {note.important ? 'important' : ''}</strong>
-        </li>
+        </List>
       )}
     </div>
   )
