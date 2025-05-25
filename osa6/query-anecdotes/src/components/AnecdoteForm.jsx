@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createAnecdote } from '../requests'
-import { useNotificationDispatch } from '../NotificationContext'
+import { useSetNotification } from '../NotificationContext'
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
-  const dispatch = useNotificationDispatch()
+  const dispatch = useSetNotification()
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
