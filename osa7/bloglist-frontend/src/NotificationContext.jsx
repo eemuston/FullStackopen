@@ -1,5 +1,7 @@
 import { createContext, useReducer, useContext } from 'react'
 
+const NotificationContext = createContext()
+
 const NotificationReducer = (state, action) => {
     switch (action.type) {
         case 'LIKE':
@@ -17,8 +19,6 @@ const NotificationReducer = (state, action) => {
   }
 }
 
-const NotificationContext = createContext()
-
 export const useNotificationValue = () => {
   const notificationandDispatch = useContext(NotificationContext)
   return notificationandDispatch[0]
@@ -28,7 +28,6 @@ export const useSetNotification = () => {
   const notificationandDispatch = useContext(NotificationContext)
   return notificationandDispatch[1]
 }
-
 
 let timeoutId
 

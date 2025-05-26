@@ -7,20 +7,21 @@ import Togglable from './components/Togglable';
 import BlogForm from './components/BlogForm';
 import { useSetNotification } from "./NotificationContext";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useUser } from './UserContext'
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
   const blogFormRef = useRef();
   const dispatch = useSetNotification()
   const queryClient = useQueryClient()
+  const {user, userDispatch} = useUser()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      userDispatch({ type: 'LOGIN', payload: user})
       blogService.setToken(user.token);
     }
   }, []);
@@ -34,7 +35,7 @@ const App = () => {
       });
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
+      userDispatch({ type: 'LOGIN', payload: user})
       setUsername('');
       setPassword('');
     } catch (exception) {
@@ -118,7 +119,7 @@ const App = () => {
   const handleLogout = () => {
     console.log('clearing localstorage');
     window.localStorage.clear();
-    setUser(null);
+    userDispatch({ type: 'LOGOUT' })
   };
 
   const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
