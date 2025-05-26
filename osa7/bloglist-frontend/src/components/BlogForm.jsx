@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useSetNotification } from '../NotificationContext'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSetNotification } from '../NotificationContext';
+import { StyledButton } from '../App';
 
 const BlogForm = () => {
-  const queryClient = useQueryClient()
-  const dispatch = useSetNotification()
+  const queryClient = useQueryClient();
+  const dispatch = useSetNotification();
   const [newTitle, setNewTitle] = useState('');
   const [newAuthor, setNewAuthor] = useState('');
   const [newUrl, setNewUrl] = useState('');
@@ -13,14 +14,17 @@ const BlogForm = () => {
   const newBlogMutation = useMutation({
     mutationFn: blogService.create,
     onSuccess: (newBlog) => {
-      const blogs = queryClient.getQueryData(['blogs'])
-      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
-      dispatch("CUSTOM", {message: `new blog ${newBlog.title} by ${newBlog.author} created!`, color: 'green'})
+      const blogs = queryClient.getQueryData(['blogs']);
+      queryClient.setQueryData(['blogs'], blogs.concat(newBlog));
+      dispatch('CUSTOM', {
+        message: `new blog ${newBlog.title} by ${newBlog.author} created!`,
+        color: 'green',
+      });
       setNewTitle('');
       setNewAuthor('');
       setNewUrl('');
-    }
-  })
+    },
+  });
 
   const addBlog = (event) => {
     event.preventDefault();
@@ -65,7 +69,7 @@ const BlogForm = () => {
             />
           </label>
         </div>
-        <button type="submit">save</button>
+        <StyledButton type="submit">save</StyledButton>
       </form>
     </div>
   );

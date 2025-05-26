@@ -1,32 +1,48 @@
-import Togglable from "./Togglable"
-import BlogForm from "./BlogForm"
+import Togglable from './Togglable';
+import BlogForm from './BlogForm';
 import { useRef } from 'react';
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Blogs = ({ blogs }) => {
-    const blogFormRef = useRef()
-    const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  const blogFormRef = useRef();
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
 
-    const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    };
-
-    return (
-        <div>
-            <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-              <BlogForm />
-            </Togglable>
-            {sortedBlogs.map((blog) => (
-                <div key={blog.id} style={blogStyle}>
-                        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
-                </div>
-            ))}
+  return (
+    <BlogsView>
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+        <BlogForm />
+      </Togglable>
+      <br />
+      {sortedBlogs.map((blog) => (
+        <div key={blog.id}>
+          <BlogsDiv>
+            <StyledLink to={`/blogs/${blog.id}`}>
+              {blog.title} {blog.author}
+            </StyledLink>
+          </BlogsDiv>
         </div>
-    )
-}
+      ))}
+    </BlogsView>
+  );
+};
 
-export default Blogs
+const StyledLink = styled(Link)`
+  color: #4ea8de;
+
+  &:hover {
+    color: white;
+  }
+`;
+const BlogsView = styled.div`
+  font-size: 1.5rem;
+`;
+const BlogsDiv = styled.div`
+  background: #777;
+  margin: 6px;
+  padding: 7px;
+  border-radius: 10px;
+  text-align: center;
+`;
+
+export default Blogs;

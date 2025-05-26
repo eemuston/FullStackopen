@@ -11,4 +11,4 @@ const createComment = async (id, newObject) => {
   return response.data;
 };
 
-export default { getAllComments, createComment};
+export default { getAllComments, createComment };

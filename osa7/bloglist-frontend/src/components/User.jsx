@@ -1,21 +1,26 @@
-import { useParams } from "react-router-dom"
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const User = ({ users }) => {
-    const { id } = useParams()
-    const user = users.find((u) => u.id === id)
+  const { id } = useParams();
+  const user = users.find((u) => u.id === id);
 
-    if (!user) {
-        return <div> user not found </div>
-    }
+  if (!user) {
+    return <div> user not found </div>;
+  }
 
-    return (
-        <div>
-            <h1>{user.name}</h1>
-            {user.blogs.map((blog) => (
-                <li key={blog.id}>{blog.title}</li>
-            ))}
-        </div>
-    )
-}
+  return (
+    <UserView>
+      <h1>{user.name}</h1>
+      {user.blogs.map((blog) => (
+        <li key={blog.id}>{blog.title}</li>
+      ))}
+    </UserView>
+  );
+};
 
-export default User
+const UserView = styled.div`
+  font-size: 1.5rem;
+`;
+
+export default User;

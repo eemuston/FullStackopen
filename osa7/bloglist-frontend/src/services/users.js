@@ -6,4 +6,4 @@ const getAllUsers = () => {
   return request.then((response) => response.data);
 };
 
-export default { getAllUsers }
+export default { getAllUsers };
