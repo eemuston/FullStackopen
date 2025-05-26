@@ -3,14 +3,20 @@ const Comment = require('../models/comment.js')
 const Blog = require('../models/blog')
 
 commentsRouter.get('/', async (request, response) => {
-  const comments = await Comment.find({})
-    .find({}).populate('blog', { title: 1, author: 1, id: 1})
+  const blogId = request.params.blogId
+
+  if (!blogId) {
+    return response.status(400).json({ error: 'blog id is required'})
+  }
+  const comments = await Comment.find({blog: blogId})
+  .populate('blog', { title: 1, author: 1, id: 1})
   response.json(comments)
 })
 
 commentsRouter.post('/', async (request, response) => {
+    try {
     const { comment } = request.body
-    const blogId = req.params.blogId
+    const blogId = request.params.blogId
 
     const blog = await Blog.findById(blogId)
     if (!blog) {
@@ -25,8 +31,12 @@ commentsRouter.post('/', async (request, response) => {
     const savedComment = await newComment.save()
     blog.comments = blog.comments.concat(savedComment._id)
     await blog.save()
-    await savedComment.populate({ title: 1, author: 1, id: 1})
+    await savedComment.populate('blog', { title: 1, author: 1, id: 1})
     response.status(201).json(savedComment)
+     } catch (error) {
+    console.error('Error creating comment:', error)
+    response.status(500).json({ error: 'Internal Server Error' })
+  }
 })
 
 module.exports = commentsRouter

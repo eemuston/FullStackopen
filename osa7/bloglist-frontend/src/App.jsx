@@ -15,7 +15,6 @@ import {
   Route,
   Link,
   Navigate,
-  useMatch,
   useNavigate,
   useParams
 } from "react-router-dom"
@@ -134,6 +133,7 @@ const App = () => {
     console.log('clearing localstorage');
     window.localStorage.clear();
     userDispatch({ type: 'LOGOUT' })
+    navigate('/')
   };
 
   const padding = {
@@ -142,17 +142,17 @@ const App = () => {
 
   return (
     <div>
-      <Notification />
-      <h2>blogs</h2>
-      <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
-      </div>
       {!user && loginForm()}
       {user && (
         <div>
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>log out</button>
+          <div>
+            <Link style={padding} to="/">blogs</Link>
+            <Link style={padding} to="/users">users</Link>
+            <p style={padding}>{user.name} logged in</p>
+            <button onClick={handleLogout}>log out</button>
+          </div>
+          <Notification />
+          <h2>blog app</h2>
           <Routes>
             <Route path="/users" element={<Users users={users}/>} />
             <Route path="/users/:id" element={<User users={users}/>} />
