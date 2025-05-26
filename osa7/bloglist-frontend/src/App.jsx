@@ -1,22 +1,43 @@
 import { useState, useEffect, useRef } from 'react';
-import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import userService from './services/users'
 import Notification from './components/Notification';
-import Togglable from './components/Togglable';
-import BlogForm from './components/BlogForm';
+import Blogs from './components/Blogs';
+import Blog from './components/Blog';
+import Users from './components/Users'
+import User from './components/User'
 import { useSetNotification } from "./NotificationContext";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useUser } from './UserContext'
+import {
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useMatch,
+  useNavigate,
+  useParams
+} from "react-router-dom"
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const blogFormRef = useRef();
   const dispatch = useSetNotification()
   const queryClient = useQueryClient()
   const {user, userDispatch} = useUser()
-
+  const navigate = useNavigate()
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    retry: 1
+  })
+  const resultUser = useQuery({
+    queryKey: ['users'],
+    queryFn: userService.getAllUsers,
+    retry: 1
+  })
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
@@ -42,7 +63,6 @@ const App = () => {
       dispatch('CUSTOM', { message: 'wrong credentials', color: 'red' });
     }
   };
-
   
   const updateBlogMutation = useMutation({
     mutationFn: blogService.update,
@@ -71,6 +91,7 @@ const App = () => {
  const deleteBlog = (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       deleteBlogMutation.mutate(blog)
+      navigate('/')
     }
   };
 
@@ -100,21 +121,14 @@ const App = () => {
     </form>
   );
   
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-    retry: 1
-  })
-  
-  if ( result.isLoading ) {
+  if ( result.isLoading || resultUser.isLoading ) {
     return <div>loading data...</div>
   }
-  
-  if ( result.isError ) {
+  if ( result.isError || resultUser.isError ) {
     return <div>SOMETHING IS BROKEN BROTHER!</div>
   }
-  
   const blogs = result.data
+  const users = resultUser.data
 
   const handleLogout = () => {
     console.log('clearing localstorage');
@@ -122,31 +136,29 @@ const App = () => {
     userDispatch({ type: 'LOGOUT' })
   };
 
-  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
+  const padding = {
+    padding: 5
+  }
 
   return (
     <div>
       <Notification />
       <h2>blogs</h2>
+      <div>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
+      </div>
       {!user && loginForm()}
       {user && (
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
-          {
-            <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-              <BlogForm />
-            </Togglable>
-          }
-          {sortedBlogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-              likeBlog={() => likeBlog(blog)}
-              deleteBlog={() => deleteBlog(blog)}
-            />
-          ))}
+          <Routes>
+            <Route path="/users" element={<Users users={users}/>} />
+            <Route path="/users/:id" element={<User users={users}/>} />
+            <Route path="/" element={<Blogs blogs={blogs}/>} />
+            <Route path="/blogs/:id" element={<Blog blogs={blogs} user={user} likeBlog={likeBlog} deleteBlog={deleteBlog}/>} />
+          </Routes>
         </div>
       )}
     </div>
