@@ -14,6 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const blogFormRef = useRef();
   const dispatch = useSetNotification()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -42,36 +43,37 @@ const App = () => {
   };
 
   
-  const likeBlog = (id) => {
-    const blog = blogs.find((b) => b.id === id);
-    const likedBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id };
-    
-    blogService.update(id, likedBlog).then((returnedBlog) => {
-      setBlogs(
-        blogs.map((blog) =>
-          blog.id === likedBlog.id ? { ...returnedBlog, user: blog.user } : blog
-      )
-    );
-    dispatch('LIKE',  { message: likedBlog.title });
-  });
-};
+  const updateBlogMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: (likedBlog) => {
+      queryClient.invalidateQueries(['blogs'])
+      dispatch('LIKE',  { message: likedBlog.title });
+    }
+  })
 
-const deleteBlog = (blog) => {
-  if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-    blogService
-    .erase(blog.id)
-    .then(() => {
-      const filteredBlogs = blogs.filter((b) => b.id !== blog.id);
-      setBlogs(filteredBlogs);
-      dispatch('CUSTOM', { message: `${blog.title} by ${blog.author} has been deleted`, color: 'green'});
-    })
-    .catch((error) => {
-      dispatch('CUSTOM', { message: `You are not authorized to delete ${blog.title}`, color: 'red'});
-    });
+  const likeBlog = (blog) => {
+    updateBlogMutation.mutate({...blog, likes: blog.likes + 1})
   }
-};
 
-const loginForm = () => (
+  const deleteBlogMutation = useMutation({
+    mutationFn: (blog) => blogService.erase(blog.id),
+    onSuccess: (_, blog) => {
+      queryClient.invalidateQueries(['blogs'])
+      dispatch('CUSTOM', { message: `${blog.title} by ${blog.author} has been deleted`, color: 'green'});
+    },
+    onError: () =>
+    {
+      dispatch('CUSTOM', { message: `You are not authorized to delete this blog`, color: 'red'});
+    }
+  })
+
+ const deleteBlog = (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      deleteBlogMutation.mutate(blog)
+    }
+  };
+
+ const loginForm = () => (
   <form onSubmit={handleLogin}>
       <div>
         username
@@ -140,7 +142,7 @@ const loginForm = () => (
               key={blog.id}
               blog={blog}
               user={user}
-              likeBlog={() => likeBlog(blog.id)}
+              likeBlog={() => likeBlog(blog)}
               deleteBlog={() => deleteBlog(blog)}
             />
           ))}
