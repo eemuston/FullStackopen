@@ -1,4 +1,6 @@
 const calculateBmi = (height: number, weight: number): string => {
+    if (height == 0)
+        return ("Dividing with 0 is no good män!")
     const heightMeters = height / 100
     const bmi = weight / (heightMeters * heightMeters)
     const formatted = Math.round(bmi * 100) / 100
@@ -17,4 +19,4 @@ const calculateBmi = (height: number, weight: number): string => {
     return `BMI with height of ${height} and weight of ${weight} is ${formatted}, which is in the ${range} range.`
 }
 
-console.log(calculateBmi(187, 90.7))
+console.log(calculateBmi(0, 85))
