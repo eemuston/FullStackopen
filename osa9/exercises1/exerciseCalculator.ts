@@ -45,7 +45,7 @@ const calculateExercises = (days: Array<number>, target: number): Result => {
         ratingDesc = "YOU REACHED THE TARGET! GOOD JOB!"
     else if (rating == 2)
         ratingDesc = "not quite there, but not too bad."
-    else if (rating == 1)
+    else
         ratingDesc = "Can you even try please. Honestly bad job."
 
     const result: Result = {
