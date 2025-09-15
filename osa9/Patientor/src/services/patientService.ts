@@ -8,7 +8,7 @@ const getPatients = (): NonSensitivePatient[] => {
         dateOfBirth,
         gender,
         occupation
-    }))
-}
+    }));
+};
 
-export default { getPatients }
+export default { getPatients };
