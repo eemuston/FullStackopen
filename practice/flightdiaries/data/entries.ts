@@ -29,6 +29,6 @@ const diaryEntries: DiaryEntry[] = [
         "visibility": "good",
         "comment": "I almost failed the landing but I survived"
     }
-]
+];
 
 export default diaryEntries;
