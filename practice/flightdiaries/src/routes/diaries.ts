@@ -3,7 +3,7 @@ import diaryService from '../services/diaryService';
 import { NonSensitiveDiaryEntry } from "../types";
 import { newEntrySchema } from '../utils';
 import { NewDiaryEntry, DiaryEntry } from '../types';
-import { z } from 'zod'
+import { z } from 'zod';
 
 const router = express.Router();
 

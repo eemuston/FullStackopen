@@ -1,5 +1,5 @@
 import { Weather, Visibility } from './types';
-import { z } from 'zod'
+import { z } from 'zod';
 
 export const newEntrySchema = z.object({
   weather: z.nativeEnum(Weather),
