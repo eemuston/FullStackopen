@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils'
+import toNewPatientEntry from '../utils';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
-})
+});
 
 
 export default router;
